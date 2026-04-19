@@ -31,9 +31,11 @@ def test_time_budget_sub_clamps_and_respects_remaining():
     tb = TimeBudget(total=2.0)
     sub = tb.sub(0.5)
     assert 0.0 <= sub <= 1.0
-    # fraction out of range clamped
+    # fraction out of range clamped — remaining()을 먼저 캡처해야 monotonic 시간 흐름으로
+    # sub() 값이 이후 remaining()보다 커보이는 플래키 실패를 피한다.
     assert tb.sub(-0.1) == 0.0
-    assert tb.sub(2.0) <= tb.remaining()
+    remaining_before = tb.remaining()
+    assert tb.sub(2.0) <= remaining_before
 
 
 def test_compute_key_stable_for_same_input():
