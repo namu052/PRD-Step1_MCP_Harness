@@ -25,8 +25,31 @@ ROOT = Path(__file__).resolve().parent.parent
 MAX_FILE_LINES = 800
 MAX_FUNC_LINES = 50
 
+# ──────────────────────────────────────────────────────────────
+# Grandfathered exemptions — 기존 위반은 `docs/exec-plans/tech-debt-tracker.md`
+# 에 TD-ID 로 등록된 건에 한해 경고(WARN)로 강등. 신규 위반은 그대로 VIOLATION.
+# 여기 목록을 늘리지 말 것. 해결 시 해당 항목을 이 리스트에서 제거.
+# ──────────────────────────────────────────────────────────────
+LEGACY_FILE_SIZE: dict[str, str] = {
+    "backend/mcp_server.py": "TD-0001",
+    "backend/app/services/crawler_service.py": "TD-0002",
+}
+LEGACY_FUNC_SIZE: set[tuple[str, str]] = {
+    ("backend/tests/conftest.py", "force_fallback_paths"),  # TD-0005
+}
+LEGACY_LAYER_COMPONENT_NETWORK: dict[str, str] = {
+    "frontend/src/components/auth/CertSelector.jsx": "TD-0006",
+    "frontend/src/components/preview/PreviewPanel.jsx": "TD-0007",
+}
+
+
+def _rel(p: Path) -> str:
+    return p.relative_to(ROOT).as_posix()
+
+
 VIOLATIONS: list[str] = []
 WARNINGS: list[str] = []
+GRANDFATHERED: list[str] = []
 
 
 def _is_scratch(path: Path) -> bool:
@@ -49,7 +72,12 @@ def scan_file_sizes() -> None:
             except OSError:
                 continue
             if lines > MAX_FILE_LINES:
-                VIOLATIONS.append(f"[file-size] {p.relative_to(ROOT)}: {lines} > {MAX_FILE_LINES}")
+                rel = _rel(p)
+                msg = f"[file-size] {rel}: {lines} > {MAX_FILE_LINES}"
+                if rel in LEGACY_FILE_SIZE:
+                    GRANDFATHERED.append(f"{msg} (grandfathered {LEGACY_FILE_SIZE[rel]})")
+                else:
+                    VIOLATIONS.append(msg)
 
 
 def scan_python_function_sizes() -> None:
@@ -79,9 +107,13 @@ def scan_python_function_sizes() -> None:
                     break
             length = end - i
             if length > MAX_FUNC_LINES and "# allow-long" not in line:
-                VIOLATIONS.append(
-                    f"[func-size] {p.relative_to(ROOT)}:{i+1} {m.group(2)} = {length} > {MAX_FUNC_LINES}"
-                )
+                rel = _rel(p)
+                fn_name = m.group(2)
+                msg = f"[func-size] {rel}:{i+1} {fn_name} = {length} > {MAX_FUNC_LINES}"
+                if (rel, fn_name) in LEGACY_FUNC_SIZE:
+                    GRANDFATHERED.append(f"{msg} (grandfathered TD-0005)")
+                else:
+                    VIOLATIONS.append(msg)
 
 
 def scan_services_fastapi_imports() -> None:
@@ -101,7 +133,12 @@ def scan_components_direct_network() -> None:
     for p in comp_dir.rglob("*.jsx"):
         text = p.read_text(encoding="utf-8", errors="ignore")
         if re.search(r"\bfetch\s*\(", text) or re.search(r"\baxios\b", text):
-            VIOLATIONS.append(f"[layer] {p.relative_to(ROOT)}: components must call via lib/, not fetch/axios directly")
+            rel = _rel(p)
+            msg = f"[layer] {rel}: components must call via lib/, not fetch/axios directly"
+            if rel in LEGACY_LAYER_COMPONENT_NETWORK:
+                GRANDFATHERED.append(f"{msg} (grandfathered {LEGACY_LAYER_COMPONENT_NETWORK[rel]})")
+            else:
+                VIOLATIONS.append(msg)
 
 
 def scan_config_absolute_paths() -> None:
@@ -144,6 +181,8 @@ def main() -> int:
     scan_adhoc_helpers()
 
     if not args.quiet:
+        for g in GRANDFATHERED:
+            print("GRANDFATHERED", g)
         for v in VIOLATIONS:
             print("VIOLATION", v)
         for w in WARNINGS:
