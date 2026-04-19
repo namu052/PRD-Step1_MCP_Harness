@@ -23,25 +23,22 @@ def test_chat_pipeline_stream_order():
     assert response.status_code == 200
     body = response.text
 
+    # 현재 파이프라인: searching -> answering -> done (단순화된 2-stage).
+    # 과거 drafting/verifying/finalizing 세분 단계는 단순화되면서 제거됨.
     assert "event: stage_change" in body
     assert '"stage": "searching"' in body
-    assert '"stage": "drafting"' in body
-    assert '"stage": "verifying"' in body
-    assert '"stage": "finalizing"' in body
+    assert '"stage": "answering"' in body
     assert "event: notice" in body
-    assert "웹 검색 완료" in body
-    assert "초안 작성 완료" in body
+    assert "자료 수집 완료" in body
+    assert "답변 생성 완료" in body
     assert "event: token" in body
     assert "event: sources" in body
     assert '"stage": "done"' in body
-    assert body.index('"stage": "searching"') < body.index('"stage": "drafting"')
-    assert body.index('"stage": "drafting"') < body.index("event: token")
-    assert body.index('"stage": "verifying"') > body.index('"stage": "drafting"')
-    assert body.index('"stage": "finalizing"') > body.index('"stage": "verifying"')
-    assert body.index("event: sources") > body.index('"stage": "finalizing"')
+    assert body.index('"stage": "searching"') < body.index('"stage": "answering"')
+    assert body.index('"stage": "answering"') < body.index("event: token")
+    assert body.index("event: sources") > body.index('"stage": "answering"')
     assert body.rindex('"stage": "done"') > body.index("event: sources")
     assert '"confidence"' in body
-    assert "검증 세부 지표" in body
 
 
 def test_chat_requires_session():
