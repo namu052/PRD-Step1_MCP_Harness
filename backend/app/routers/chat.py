@@ -3,8 +3,6 @@ import logging
 from collections.abc import AsyncGenerator
 
 from fastapi import APIRouter, HTTPException
-
-logger = logging.getLogger(__name__)
 from fastapi.responses import StreamingResponse
 
 from app.core.event_emitter import sse_event
@@ -22,6 +20,8 @@ from app.services.evidence_group_service import evidence_group_service
 from app.services.evidence_summary_service import evidence_summary_service
 from app.services.llm_service import llm_service
 from app.services.search_service import search_service
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api", tags=["chat"])
 

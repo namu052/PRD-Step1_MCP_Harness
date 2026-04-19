@@ -11,7 +11,7 @@ if sys.platform == "win32":
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-import httpx
+import httpx  # noqa: E402
 
 BASE = "http://127.0.0.1:8001"
 
@@ -40,7 +40,7 @@ async def main():
         session_id = auth["session_id"]
 
     # 3. 채팅 요청 (SSE 스트리밍) - BBS 포함 전체 파이프라인
-    print(f"\n[3] 파이프라인 실행 (BBS 포함)")
+    print("\n[3] 파이프라인 실행 (BBS 포함)")
     query = "취득세 감면 요건"
     print(f"  검색어: {query}")
 
@@ -132,13 +132,13 @@ async def main():
         else:
             non_bbs_sources.append(s)
 
-    print(f"\n  유형별 출처:")
+    print("\n  유형별 출처:")
     for stype, count in sorted(type_counts.items()):
         print(f"    {stype}: {count}건")
 
     # 핵심 검증 1: BBS 게시판별 태깅 확인
     print(f"\n{'─' * 50}")
-    print(f"[검증 1] 게시판별 태깅 (기타/게시판명)")
+    print("[검증 1] 게시판별 태깅 (기타/게시판명)")
     print(f"{'─' * 50}")
     if bbs_sources:
         bbs_boards_found = set()
@@ -152,11 +152,11 @@ async def main():
         has_slash = any("/" in s.get("type", "") for s in bbs_sources)
         print(f"\n  게시판별 태깅 여부: {'✅ 정상 (기타/게시판명 형식)' if has_slash else '❌ 실패 (기타 단일 태그)'}")
     else:
-        print(f"  BBS 출처 없음 (검색어에 해당하는 BBS 자료가 없을 수 있음)")
+        print("  BBS 출처 없음 (검색어에 해당하는 BBS 자료가 없을 수 있음)")
 
     # 핵심 검증 2: 상세 페이지에서 수집된 내용 확인
     print(f"\n{'─' * 50}")
-    print(f"[검증 2] 상세 페이지 수집 확인")
+    print("[검증 2] 상세 페이지 수집 확인")
     print(f"{'─' * 50}")
 
     # preview API로 상세 내용/댓글 확인
@@ -201,19 +201,19 @@ async def main():
 
     # 핵심 검증 3: 댓글 수집 여부
     print(f"\n{'─' * 50}")
-    print(f"[검증 3] BBS 댓글 수집")
+    print("[검증 3] BBS 댓글 수집")
     print(f"{'─' * 50}")
     print(f"  확인한 BBS 상세: {bbs_detail_checked}건")
     print(f"  댓글 있는 BBS: {bbs_with_comments}건")
     if bbs_detail_checked > 0:
         print(f"  댓글 수집률: {bbs_with_comments}/{bbs_detail_checked}")
     else:
-        print(f"  (BBS 상세 자료 없음)")
+        print("  (BBS 상세 자료 없음)")
 
     # 답변 요약
     answer = "".join(tokens)
     print(f"\n{'─' * 50}")
-    print(f"[답변 요약]")
+    print("[답변 요약]")
     print(f"{'─' * 50}")
     print(f"  길이: {len(answer)}자")
     print(f"  미리보기: {answer[:300]}...")

@@ -2,11 +2,11 @@ import logging
 import re
 
 from app.config import get_settings
-
-logger = logging.getLogger(__name__)
 from app.models.evidence import EvidenceSlot, SlotVerification
 from app.prompts.grouped_verification_prompt import GROUPED_VERIFICATION_PROMPT
 from app.services.openai_service import openai_service
+
+logger = logging.getLogger(__name__)
 
 
 GROUPED_VERIFICATION_SCHEMA = {

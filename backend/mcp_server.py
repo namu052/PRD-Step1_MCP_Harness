@@ -45,7 +45,7 @@ logging.basicConfig(
 logger = logging.getLogger("mcp_server")
 logger.info("MCP 서버 로그 파일: %s", _log_file)
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp import FastMCP  # noqa: E402
 
 # ── FastMCP 인스턴스 ──
 mcp = FastMCP("지방세-질의응답")
@@ -879,7 +879,7 @@ async def _run_full_pipeline(
     sections.append(f"- 연도 기준: {search_plan.weighting_label}")
 
     # 수집 통계
-    sections.append(f"\n## 수집 통계")
+    sections.append("\n## 수집 통계")
     sections.append(
         f"- {len(crawl_results)}건 수집 → {len(ranked)}건 랭킹 → "
         f"{len(evidence_slots)}개 근거 묶음"
@@ -891,7 +891,7 @@ async def _run_full_pipeline(
         sq = r.source_query or "미분류"
         query_counts[sq] = query_counts.get(sq, 0) + 1
     if any(sq != "미분류" for sq in query_counts):
-        sections.append(f"\n## 검색어별 수집 기여도")
+        sections.append("\n## 검색어별 수집 기여도")
         for sq, count in sorted(query_counts.items(), key=lambda x: -x[1]):
             sections.append(f'  - "{sq}": {count}건')
 
@@ -900,7 +900,7 @@ async def _run_full_pipeline(
     if not cited_results:
         cited_results = ranked[:10]
 
-    sections.append(f"\n## 인용 출처")
+    sections.append("\n## 인용 출처")
     for i, r in enumerate(cited_results, 1):
         year = f" ({r.document_year})" if r.document_year else ""
         sections.append(f"{i}. **[{r.id}]** {r.title}{year} — {r.type}")
@@ -909,7 +909,7 @@ async def _run_full_pipeline(
 
     # 근거 묶음 요약
     if evidence_slots:
-        sections.append(f"\n## 근거 묶음 요약")
+        sections.append("\n## 근거 묶음 요약")
         for slot in evidence_slots:
             sections.append(f"\n### {slot.title}")
             if slot.issue:

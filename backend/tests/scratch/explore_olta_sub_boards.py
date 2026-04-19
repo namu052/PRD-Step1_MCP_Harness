@@ -14,7 +14,6 @@ import logging
 import os
 import sys
 import warnings
-from datetime import datetime
 from pathlib import Path
 
 if sys.platform == "win32":
@@ -197,7 +196,7 @@ async def main():
     print(f"  검색 결과 페이지: {page.url}")
 
     # 3. 각 collection별 DOM 덤프
-    print(f"\n[3/3] collection별 서브 탭 DOM 탐색")
+    print("\n[3/3] collection별 서브 탭 DOM 탐색")
     summary = {}
     for cid in COLLECTION_IDS:
         print(f"\n  --- {cid} ---")

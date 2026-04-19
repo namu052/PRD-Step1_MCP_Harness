@@ -10,13 +10,13 @@ if sys.platform == "win32":
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-from app.services.crawler_service import BBS_BOARDS, crawler_service
+from app.services.crawler_service import BBS_BOARDS, crawler_service  # noqa: E402
 
 
 async def wait_for_olta_login(max_wait=120):
     """OLTA 로그인을 폴링으로 대기한다."""
-    url = await crawler_service.open_olta_for_login()
-    print(f"  브라우저 창이 열렸습니다. OLTA에 수동 로그인해 주세요.")
+    await crawler_service.open_olta_for_login()
+    print("  브라우저 창이 열렸습니다. OLTA에 수동 로그인해 주세요.")
     print(f"  최대 {max_wait}초 대기합니다...")
 
     for elapsed in range(0, max_wait, 5):
@@ -71,7 +71,7 @@ async def main():
     for card in bbs_cards:
         board_counts[card.type] = board_counts.get(card.type, 0) + 1
 
-    print(f"\n  게시판별 결과:")
+    print("\n  게시판별 결과:")
     for board_type, count in sorted(board_counts.items()):
         print(f"    {board_type}: {count}건")
 
@@ -85,7 +85,7 @@ async def main():
 
     # 샘플 결과 출력
     if bbs_cards:
-        print(f"\n  샘플 결과 (상위 5건):")
+        print("\n  샘플 결과 (상위 5건):")
         for card in bbs_cards[:5]:
             print(f"    [{card.type}] {card.title[:60]}")
             print(f"      URL: {card.detail_url[:80]}")
@@ -98,7 +98,7 @@ async def main():
     for r in results:
         type_counts[r.type] = type_counts.get(r.type, 0) + 1
 
-    print(f"\n  유형별 결과:")
+    print("\n  유형별 결과:")
     for rtype, count in sorted(type_counts.items()):
         print(f"    {rtype}: {count}건")
 
@@ -113,7 +113,7 @@ async def main():
 
     # BBS 결과 상세 샘플
     if bbs_results:
-        print(f"\n  BBS 상세 결과 샘플 (상위 3건):")
+        print("\n  BBS 상세 결과 샘플 (상위 3건):")
         for r in bbs_results[:3]:
             print(f"    [{r.type}] {r.title[:60]}")
             print(f"      내용(앞100자): {r.content[:100]}...")

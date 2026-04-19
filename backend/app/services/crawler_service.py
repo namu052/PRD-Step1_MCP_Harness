@@ -9,12 +9,12 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import urljoin
 
-logger = logging.getLogger(__name__)
-
 from playwright.async_api import BrowserContext, Locator, Page, async_playwright
 
 from app.config import OLTA_SELECTORS, get_settings
 from app.models.schemas import BoardCollectionStat, CrawlResult
+
+logger = logging.getLogger(__name__)
 
 
 BBS_BOARDS = [

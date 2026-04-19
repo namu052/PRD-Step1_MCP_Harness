@@ -4,13 +4,13 @@ import re
 from typing import Awaitable, Callable, Optional
 
 from app.config import get_settings
-
-logger = logging.getLogger(__name__)
 from app.models.evidence import EvidenceSlot
 from app.models.schemas import CrawlResult, VerificationHistory
 from app.models.verification import FinalAnswer, VerificationResult
 from app.prompts.stage2_final_prompt import FINAL_ANSWER_PROMPT
 from app.services.openai_service import openai_service
+
+logger = logging.getLogger(__name__)
 
 
 class FinalGenerator:

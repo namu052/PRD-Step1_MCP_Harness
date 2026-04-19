@@ -111,14 +111,14 @@ async def stream_chat(session_id: str, question: str):
     print(f"질문: {question}")
     print("=" * 70)
 
-    print(f"\n[시간 측정]")
+    print("\n[시간 측정]")
     print(f"  총 소요 시간: {total}초")
     if first_token_time:
         print(f"  첫 토큰까지: {first_token_time}초")
     for stage_name, t in stage_times.items():
         print(f"  {stage_name}: {t}초 시점 진입")
 
-    print(f"\n[답변 품질]")
+    print("\n[답변 품질]")
     print(f"  답변 길이: {len(answer)}자")
     print(f"  출처 수: {len(sources)}건")
     if confidence:
@@ -128,13 +128,13 @@ async def stream_chat(session_id: str, question: str):
     if errors:
         print(f"  에러: {errors}")
 
-    print(f"\n[답변 미리보기 (앞 500자)]")
+    print("\n[답변 미리보기 (앞 500자)]")
     print("-" * 50)
     print(answer[:500])
     print("-" * 50)
 
     if sources:
-        print(f"\n[출처 목록 (상위 5건)]")
+        print("\n[출처 목록 (상위 5건)]")
         for s in sources[:5]:
             print(f"  - [{s.get('type', '')}] {s.get('title', '')[:60]}")
 

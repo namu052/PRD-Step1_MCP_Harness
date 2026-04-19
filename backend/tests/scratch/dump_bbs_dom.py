@@ -7,8 +7,6 @@ import asyncio
 import json
 import os
 import sys
-import time
-from datetime import datetime
 from pathlib import Path
 
 if sys.platform == "win32":
@@ -31,7 +29,7 @@ def save(filename: str, content: str):
 async def main():
     query = sys.argv[1] if len(sys.argv) > 1 else "장애인 감면"
     print(f"\n{'=' * 60}")
-    print(f"  OLTA BBS DOM 덤프")
+    print("  OLTA BBS DOM 덤프")
     print(f"  검색어: \"{query}\"")
     print(f"  출력 디렉토리: {DUMP_DIR}")
     print(f"{'=' * 60}\n")
@@ -399,11 +397,11 @@ async def main():
         print(f"      게시글 링크 후보: {len(bbs_links_info)}개")
 
         # BBS 식별자 있는 링크만 필터링
-        bbs_identified = [l for l in bbs_links_info if l.get("has_bbs_id")]
+        bbs_identified = [link for link in bbs_links_info if link.get("has_bbs_id")]
         print(f"      bbsId/nttId 포함 링크: {len(bbs_identified)}개")
         if bbs_identified:
-            for l in bbs_identified[:5]:
-                print(f"        - [{l['index']}] \"{l['text'][:40]}\" onclick={l['onclick'][:80]}")
+            for link in bbs_identified[:5]:
+                print(f"        - [{link['index']}] \"{link['text'][:40]}\" onclick={link['onclick'][:80]}")
 
         # ─── 덤프 E: JavaScript 함수 목록 ───
         print("\n  [10] 덤프 E: 페이지 JS 함수 목록")
@@ -440,9 +438,9 @@ async def main():
 
         # ─── 요약 ───
         print(f"\n{'=' * 60}")
-        print(f"  DOM 덤프 완료!")
+        print("  DOM 덤프 완료!")
         print(f"  출력 디렉토리: {DUMP_DIR}")
-        print(f"  생성 파일:")
+        print("  생성 파일:")
         for f in sorted(DUMP_DIR.iterdir()):
             size_kb = f.stat().st_size / 1024
             print(f"    {f.name:40} {size_kb:6.1f} KB")

@@ -5,8 +5,6 @@ from dataclasses import dataclass
 from typing import Awaitable, Callable, Optional
 
 from app.config import get_settings
-
-logger = logging.getLogger(__name__)
 from app.models.evidence import EvidenceSlot
 from app.models.schemas import CrawlResult, WebSearchResult
 from app.models.verification import VerificationResult
@@ -19,6 +17,8 @@ from app.prompts.stage1_prompt import NO_RESULTS_ANSWER
 from app.prompts.stage1_prompt import STAGE1_SYSTEM_PROMPT, STAGE1_USER_PROMPT
 from app.prompts.web_draft_prompt import WEB_DRAFT_SYSTEM_PROMPT, WEB_DRAFT_USER_PROMPT
 from app.services.openai_service import openai_service
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass

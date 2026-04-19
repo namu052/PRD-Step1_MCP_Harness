@@ -149,7 +149,7 @@ class CollectionStatsTracker:
 
         with open(output_path, "w", encoding="utf-8") as f:
             f.write("=" * 90 + "\n")
-            f.write(f"  OLTA 자료 수집 전체 결과\n")
+            f.write("  OLTA 자료 수집 전체 결과\n")
             f.write(f"  검색어: \"{query}\"\n")
             f.write(f"  수집일시: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
             f.write(f"  소요시간: {elapsed:.1f}초\n")
@@ -175,9 +175,9 @@ class CollectionStatsTracker:
                     f.write(f"  관련도: {r.relevance_score:.2f}\n")
                     if r.comments:
                         f.write(f"  댓글: {r.comments}\n")
-                    f.write(f"\n  [미리보기]\n")
+                    f.write("\n  [미리보기]\n")
                     f.write(f"  {r.preview}\n")
-                    f.write(f"\n  [본문]\n")
+                    f.write("\n  [본문]\n")
                     # 본문을 줄단위로 들여쓰기
                     for line in r.content.split("\n"):
                         f.write(f"  {line}\n")
@@ -196,7 +196,7 @@ class CollectionStatsTracker:
 async def main():
     query = sys.argv[1] if len(sys.argv) > 1 else "장애인 감면"
     print(f"\n{'=' * 70}")
-    print(f"  OLTA 자료수집 통계 테스트")
+    print("  OLTA 자료수집 통계 테스트")
     print(f"  검색어: \"{query}\"")
     print(f"  시작: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'=' * 70}\n")

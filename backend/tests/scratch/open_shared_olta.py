@@ -26,7 +26,7 @@ async def main():
     from app.services.crawler_service import crawler_service
 
     await crawler_service.ensure_browser()
-    page = await crawler_service.ensure_shared_page()
+    await crawler_service.ensure_shared_page()
     url = await crawler_service.open_olta_for_login()
 
     print("=" * 60)

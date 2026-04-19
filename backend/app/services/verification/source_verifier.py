@@ -2,12 +2,12 @@ import logging
 import re
 
 from app.config import get_settings
-
-logger = logging.getLogger(__name__)
 from app.models.schemas import CrawlResult
 from app.models.verification import SourceVerification
 from app.prompts.stage2_source_prompt import SOURCE_VERIFICATION_PROMPT
 from app.services.openai_service import openai_service
+
+logger = logging.getLogger(__name__)
 
 
 SOURCE_VERIFICATION_SCHEMA = {

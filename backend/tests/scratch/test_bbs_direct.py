@@ -11,10 +11,10 @@ if sys.platform == "win32":
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-import logging
+import logging  # noqa: E402
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s")
 
-from app.services.crawler_service import BBS_BOARDS, crawler_service
+from app.services.crawler_service import crawler_service  # noqa: E402
 
 
 async def main():
@@ -44,7 +44,7 @@ async def main():
     print(f"  OLTA 로그인 확인: {logged_in}")
 
     # 2. 단일 게시판 BBS 검색 진단 (상세 로그 포함)
-    print(f"\n[2] 단일 게시판 검색 진단")
+    print("\n[2] 단일 게시판 검색 진단")
     query = "취득세 감면"
     test_boards = ["질의응답", "지방세상담", "FAQ"]
 
@@ -64,7 +64,7 @@ async def main():
             print(f"  오류: {e} ({elapsed}초)")
 
     # 3. doBrdNmCollection 호출 진단
-    print(f"\n[3] doBrdNmCollection JS 함수 진단")
+    print("\n[3] doBrdNmCollection JS 함수 진단")
     page = await ctx.new_page()
     try:
         from urllib.parse import urljoin
@@ -88,7 +88,7 @@ async def main():
                 return Array.from(radios).map(r => ({value: r.value, id: r.id, checked: r.checked}));
             }
         """)
-        print(f"  사용 가능한 collection 라디오:")
+        print("  사용 가능한 collection 라디오:")
         for c in collections:
             print(f"    value={c['value']}, id={c['id']}, checked={c['checked']}")
 
@@ -113,7 +113,7 @@ async def main():
         # doBrdNmCollection 호출 전 상태 캡처
         if fn_exists:
             # 먼저 빈 문자열로 BBS 전체 검색
-            print(f"\n  doBrdNmCollection('','bbs') 호출 테스트:")
+            print("\n  doBrdNmCollection('','bbs') 호출 테스트:")
             await page.evaluate("doBrdNmCollection('','bbs')")
             try:
                 await page.wait_for_selector(
@@ -167,7 +167,7 @@ async def main():
                     body = await page.locator("body").inner_text()
                     # "검색결과가 없습니다" 등의 메시지 확인
                     if "검색결과" in body or "없습니다" in body:
-                        print(f"    → 검색 결과 없음 메시지 확인")
+                        print("    → 검색 결과 없음 메시지 확인")
                     else:
                         print(f"    페이지 내용(앞200자): {body[:200]}")
         else:
@@ -194,7 +194,7 @@ async def main():
         await page.close()
 
     # 4. 전체 18개 게시판 검색 (로그인 상태)
-    print(f"\n[4] 전체 18개 게시판 검색")
+    print("\n[4] 전체 18개 게시판 검색")
     start = time.time()
     all_cards = await crawler_service._search_all_bbs_boards(ctx, [query])
     total = round(time.time() - start, 1)
@@ -206,15 +206,15 @@ async def main():
         board_counts[card.type] = board_counts.get(card.type, 0) + 1
 
     if board_counts:
-        print(f"\n  게시판별 결과:")
+        print("\n  게시판별 결과:")
         for btype, count in sorted(board_counts.items()):
             print(f"    {btype}: {count}건")
     else:
-        print(f"  결과 없음 - BBS 검색이 작동하지 않고 있습니다")
+        print("  결과 없음 - BBS 검색이 작동하지 않고 있습니다")
 
     # 5. 상세 + 댓글 수집 테스트
     if all_cards:
-        print(f"\n[5] 상세 페이지 + 댓글 수집 (상위 3건)")
+        print("\n[5] 상세 페이지 + 댓글 수집 (상위 3건)")
         test_cards = all_cards[:3]
         details = await crawler_service._collect_details(ctx, test_cards)
         for d in details:
