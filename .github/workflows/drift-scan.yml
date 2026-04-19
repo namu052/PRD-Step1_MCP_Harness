@@ -1,0 +1,25 @@
+name: drift-scan
+
+on:
+  schedule:
+    - cron: "0 3 * * MON"   # 매주 월 03:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Docs freshness (warn-only)
+        run: python scripts/check-docs-freshness.py --warn-only
+      - name: Docs map snapshot
+        run: python scripts/docs-map.py --write docs/generated/doc-map.md
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: drift-snapshot
+          path: |
+            docs/generated/doc-map.md

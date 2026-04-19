@@ -1,0 +1,16 @@
+# Codex profile: base
+# 일상 개발/탐색용. Level 2 기본값과 호환.
+
+extends = "../config.toml"
+profile = "base"
+
+[approvals]
+policy = "on-request"
+
+[sandbox]
+mode = "workspace-write"
+network = "restricted"
+
+[limits]
+pr_size_lines = 400
+tool_timeout_sec = 300

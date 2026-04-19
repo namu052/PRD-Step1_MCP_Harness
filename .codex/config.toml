@@ -1,0 +1,56 @@
+# ==============================================================
+# 공용 Codex 설정 — 저장소 루트 기본값 (profile: base)
+# --------------------------------------------------------------
+# 규칙:
+#  - 절대경로/사용자 홈 경로/시크릿 환경변수 값 금지
+#  - MCP 서버 등록은 .codex/config.local.toml (gitignore)
+#  - 공용 정책은 docs/policies/*, SOP는 docs/sops/codex-sop.md
+# 변경 시 PR + 사람 승인 1인 이상.
+# ==============================================================
+
+# profile = "base"
+
+[approvals]
+# default는 명시적 요청 시에만 승인. 고위험은 allowed_commands로 화이트리스트.
+policy = "on-request"
+
+[sandbox]
+# workspace-write: 현재 worktree 쓰기 허용, 외부 경로 읽기 전용
+mode = "workspace-write"
+network = "restricted"   # outbound allowlist는 profile에서 조정
+
+[workflow]
+require_plan = true                  # docs/exec-plans/active/* 존재 필수
+verify_command = "scripts/verify.sh"
+quick_verify_command = "scripts/verify.sh --quick"
+worktree_required = true
+
+[commands]
+# 공용 허용 명령. 위험 명령은 profile에서 제한.
+allowed = [
+  "git status", "git diff", "git log",
+  "npm run lint", "npm run build", "npm run dev",
+  "pytest", "python -m pytest",
+  "uvicorn app.main:app --reload",
+  "scripts/verify.sh", "scripts/verify.sh --quick",
+  "scripts/structure-check.py",
+  "scripts/worktree-up.sh", "scripts/worktree-down.sh",
+]
+denied = [
+  "rm -rf *", "rm -rf /", "git push --force", "git reset --hard",
+  "sudo *", "chmod 777 *",
+]
+
+[docs]
+# 반드시 먼저 읽어야 하는 문서(체크리스트)
+required = [
+  "ARCHITECTURE.md",
+  "docs/policies/GOLDEN_RULES.md",
+  "docs/policies/STRUCTURE_RULES.md",
+  "docs/sops/codex-sop.md",
+]
+
+[audit]
+# 에이전트 행동 로깅
+log_path = "observability/agent-actions/codex.jsonl"
+mask_secrets = true

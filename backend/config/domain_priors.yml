@@ -1,0 +1,9 @@
+# domain_priors.yml — Plan 2 / design-doc 02.
+# 소스 타입별 relevance 곱셈 가중치. 값이 클수록 상위 랭크.
+# 변경 시 배포 없이 핫리로드 되지 않음 — 이번 프로세스 부팅부터 반영.
+official_law: 1.20     # 지방세법·시행령·시행규칙 원문
+official_case: 1.10    # 대법원 판례·행정심판
+official_qna: 1.05     # 행정안전부 유권해석 Q&A
+community: 0.95        # BBS 게시판(실무 공유)
+web: 0.85              # 일반 웹 검색 결과
+unknown: 1.00

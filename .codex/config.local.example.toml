@@ -1,0 +1,17 @@
+# ==============================================================
+# .codex/config.local.toml 예시 (gitignore)
+# --------------------------------------------------------------
+# 개인 환경별 설정(MCP 서버 wiring, 경로, env_vars 이름 등).
+# 이 파일을 .codex/config.local.toml 로 복사하여 사용.
+# ==============================================================
+
+[mcp_servers.local_tax_mcp]
+command = "uv"
+args = ["run", "--with-requirements", "requirements.txt", "python", "mcp_server.py"]
+# 아래 cwd는 각 개발자 로컬 경로. 공용 파일에 넣지 말 것.
+cwd = "C:\\Users\\<you>\\...\\PRD-Step1_MCP_Harness\\backend"
+startup_timeout_sec = 120
+tool_timeout_sec = 300
+env = { PLAYWRIGHT_HEADLESS = "false" }
+# 값이 아니라 '이름'만 지정. 실제 값은 쉘 환경변수에서 주입.
+env_vars = ["OPENAI_API_KEY", "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "NO_PROXY"]

@@ -1,0 +1,163 @@
+# Golden Question Set — 지방세 질의응답 회귀 검증용 20문항
+#
+# 구성: 감면 10 / 부과 5 / 신고 3 / 매칭 없음 2 (design-doc 00)
+# 각 항목은 product 팀과 backend lead가 공동 승인. 변경 시 Plan 0 baseline 재측정 필수.
+#
+# 필드 정의:
+#   id                      : Q-NNN (3자리, 연속)
+#   category                : reduction | imposition | filing | no_match
+#   question                : 실제 질문 문자열
+#   expected_source_types   : 답변에 반드시 포함되어야 할 출처 유형
+#                             (법령 | 해석례 | 판례 | 예규 | 공식 Q&A | 기타)
+#   must_contain_keywords   : 답변에 반드시 포함되어야 할 키워드 (부분 일치)
+#   must_not_contain        : 답변에 나타나면 환각 또는 오류로 간주되는 문자열
+#   notes                   : (선택) 검수자 메모
+
+version: 1
+questions:
+
+  # ── 감면 (10) ────────────────────────────────────────────────────────
+  - id: Q-001
+    category: reduction
+    question: 취득가액 1억원 이하 서민주택을 취득하면 취득세 감면은 얼마입니까?
+    expected_source_types: [법령, 해석례]
+    must_contain_keywords: [지방세특례제한법, 제36조, 50, 서민주택]
+    must_not_contain: [100분의 100, 전액 면제]
+
+  - id: Q-002
+    category: reduction
+    question: 영농조합법인이 영농 목적으로 취득한 부동산의 취득세 감면 조건은?
+    expected_source_types: [법령]
+    must_contain_keywords: [지방세특례제한법, 영농조합법인, 50, 직접 사용]
+    must_not_contain: [일반 법인]
+
+  - id: Q-003
+    category: reduction
+    question: 생애최초 주택구입자의 취득세 감면 요건과 한도는?
+    expected_source_types: [법령, 해석례]
+    must_contain_keywords: [생애최초, 12억, 200만원]
+    must_not_contain: [무조건 면제]
+
+  - id: Q-004
+    category: reduction
+    question: 다자녀 가구의 자동차 취득세 감면 요건은 무엇입니까?
+    expected_source_types: [법령, 공식 Q&A]
+    must_contain_keywords: [다자녀, 18세, 자동차, 취득세]
+    must_not_contain: []
+
+  - id: Q-005
+    category: reduction
+    question: 장애인이 취득하는 자동차의 취득세·자동차세 감면 범위는?
+    expected_source_types: [법령]
+    must_contain_keywords: [장애인, 배기량, 비영업용, 전액 면제]
+    must_not_contain: []
+
+  - id: Q-006
+    category: reduction
+    question: 임대주택사업자가 취득하는 공동주택의 취득세 감면은?
+    expected_source_types: [법령, 해석례]
+    must_contain_keywords: [임대주택, 60㎡, 지방세특례제한법, 감면]
+    must_not_contain: []
+
+  - id: Q-007
+    category: reduction
+    question: 창업중소기업이 부동산을 취득할 때 취득세 감면 요건은?
+    expected_source_types: [법령]
+    must_contain_keywords: [창업중소기업, 4년, 75, 사업용]
+    must_not_contain: [모든 법인]
+
+  - id: Q-008
+    category: reduction
+    question: 농지 취득에 따른 취득세 감면(자경농민)의 요건은?
+    expected_source_types: [법령, 해석례]
+    must_contain_keywords: [자경농민, 2년, 50, 농지]
+    must_not_contain: []
+
+  - id: Q-009
+    category: reduction
+    question: 산업단지 입주기업의 취득세 감면율과 사후 추징 사유는?
+    expected_source_types: [법령]
+    must_contain_keywords: [산업단지, 35, 추징, 정당한 사유]
+    must_not_contain: []
+
+  - id: Q-010
+    category: reduction
+    question: 사회적기업이 취득한 부동산의 취득세 감면 요건은?
+    expected_source_types: [법령]
+    must_contain_keywords: [사회적기업, 지방세특례제한법, 25, 고유업무]
+    must_not_contain: []
+
+  # ── 부과 (5) ─────────────────────────────────────────────────────────
+  - id: Q-011
+    category: imposition
+    question: 주택 유상 취득 시 취득세율은 어떻게 결정됩니까(1주택·2주택·다주택)?
+    expected_source_types: [법령]
+    must_contain_keywords: [지방세법, 1, 8, 12, 조정대상지역]
+    must_not_contain: [단일세율]
+
+  - id: Q-012
+    category: imposition
+    question: 재산세 과세기준일과 납기일은 언제입니까?
+    expected_source_types: [법령]
+    must_contain_keywords: [6월 1일, 7월, 9월, 과세기준일]
+    must_not_contain: []
+
+  - id: Q-013
+    category: imposition
+    question: 법인의 부동산 취득 시 중과세가 적용되는 경우는?
+    expected_source_types: [법령, 해석례]
+    must_contain_keywords: [과밀억제권역, 대도시, 중과, 5년]
+    must_not_contain: []
+
+  - id: Q-014
+    category: imposition
+    question: 자동차세의 과세기준과 연세액 산정 방식은?
+    expected_source_types: [법령]
+    must_contain_keywords: [자동차세, 배기량, 비영업용, 연세액]
+    must_not_contain: []
+
+  - id: Q-015
+    category: imposition
+    question: 재산세 세부담상한제의 현재 적용 비율은?
+    expected_source_types: [법령, 공식 Q&A]
+    must_contain_keywords: [세부담상한, 105, 110, 130, 공시가격]
+    must_not_contain: []
+
+  # ── 신고 (3) ─────────────────────────────────────────────────────────
+  - id: Q-016
+    category: filing
+    question: 부동산 취득 후 취득세 신고·납부 기한은 며칠입니까?
+    expected_source_types: [법령]
+    must_contain_keywords: [60, 일, 취득일, 가산세]
+    must_not_contain: [30일 이내]
+
+  - id: Q-017
+    category: filing
+    question: 취득세를 기한 내 신고하지 않으면 부과되는 가산세의 종류와 율은?
+    expected_source_types: [법령]
+    must_contain_keywords: [무신고, 20, 납부지연, 일]
+    must_not_contain: []
+
+  - id: Q-018
+    category: filing
+    question: 상속에 따른 취득세 신고 기한과 특례는?
+    expected_source_types: [법령, 해석례]
+    must_contain_keywords: [상속, 6개월, 취득일, 신고]
+    must_not_contain: [60일]
+
+  # ── 매칭 없음 / 적용 불가 (2) ────────────────────────────────────────
+  - id: Q-019
+    category: no_match
+    question: 화성 탐사 기지 건설에 대한 지방세 감면 규정이 있습니까?
+    expected_source_types: []
+    must_contain_keywords: [해당, 없]
+    must_not_contain: [지방세특례제한법 제36조, 100분의 50]
+    notes: 시스템이 근거 없음을 정직하게 답변하는지(환각 억제) 확인
+
+  - id: Q-020
+    category: no_match
+    question: 가상 화폐 채굴업체의 전기요금을 지방세로 감면받을 수 있나요?
+    expected_source_types: []
+    must_contain_keywords: [해당, 없]
+    must_not_contain: [가상화폐 감면 조항]
+    notes: 가상 키워드에 대해 허위 출처를 만들지 않는지 확인

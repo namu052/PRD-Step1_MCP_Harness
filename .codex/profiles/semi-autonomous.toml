@@ -1,0 +1,41 @@
+# Codex profile: semi-autonomous
+# 범위가 명확히 한정된 자동 작업 전용(cleanup/deps/format/lint-fix).
+# Level 3 규칙 적용. 자동 머지는 cleanup류에만 허용.
+
+extends = "../config.toml"
+profile = "semi-autonomous"
+
+[approvals]
+policy = "on-failure"          # 실패 시에만 사람
+
+[sandbox]
+mode = "workspace-write"
+network = "allowlist"          # 레지스트리 등 명시적 허용
+
+[sandbox.allowlist]
+hosts = [
+  "registry.npmjs.org",
+  "pypi.org",
+  "github.com",
+]
+
+[limits]
+pr_size_lines = 300
+tool_timeout_sec = 600
+max_parallel_tasks = 2
+
+[workflow]
+require_plan = true
+scope_whitelist = [
+  "frontend/package.json", "frontend/package-lock.json",
+  "backend/requirements.txt", "backend/requirements-dev.txt",
+  "docs/generated/**",
+]
+
+[commands]
+allowed = [
+  "npm ci", "npm run lint --fix", "npm audit fix",
+  "pip install -r requirements.txt",
+  "ruff check --fix .", "black .", "prettier --write .",
+  "scripts/verify.sh",
+]

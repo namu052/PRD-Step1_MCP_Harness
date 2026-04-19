@@ -1,0 +1,5 @@
+Collecting markdown
+  Using cached markdown-3.10.2-py3-none-any.whl.metadata (5.1 kB)
+Using cached markdown-3.10.2-py3-none-any.whl (108 kB)
+Installing collected packages: markdown
+Successfully installed markdown-3.10.2

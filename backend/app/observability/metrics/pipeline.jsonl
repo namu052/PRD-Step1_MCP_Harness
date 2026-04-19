@@ -1,0 +1,10 @@
+{"ts":"2026-04-17T16:17:26Z","req_id":"8ab9e38e901f","stage":"search_planning","duration_ms":5150,"status":"ok"}
+{"ts":"2026-04-17T16:20:14Z","req_id":"8ab9e38e901f","stage":"crawling","duration_ms":168444,"status":"ok"}
+{"ts":"2026-04-17T16:20:17Z","req_id":"8ab9e38e901f","stage":"ranking","duration_ms":1669,"status":"ok"}
+{"ts":"2026-04-17T16:20:37Z","req_id":"8ab9e38e901f","stage":"evidence_grouping","duration_ms":20051,"status":"ok"}
+{"ts":"2026-04-17T16:20:47Z","req_id":"8ab9e38e901f","stage":"drafting","duration_ms":10626,"status":"ok"}
+{"ts":"2026-04-17T16:24:12Z","req_id":"5ee7d87b6a67","stage":"search_planning","duration_ms":3301,"status":"ok"}
+{"ts":"2026-04-17T16:26:46Z","req_id":"5ee7d87b6a67","stage":"crawling","duration_ms":153656,"status":"ok"}
+{"ts":"2026-04-17T16:26:49Z","req_id":"5ee7d87b6a67","stage":"ranking","duration_ms":2912,"status":"ok"}
+{"ts":"2026-04-17T16:27:24Z","req_id":"5ee7d87b6a67","stage":"evidence_grouping","duration_ms":35136,"status":"ok"}
+{"ts":"2026-04-17T16:27:38Z","req_id":"5ee7d87b6a67","stage":"drafting","duration_ms":13749,"status":"ok"}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://claude.ai/schemas/hooks.schema.json",
+  "description": "하네스 공용 훅. 위험 명령 차단 + 자동 포맷 + 감사 로그.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "tool == \"Bash\" && (command ~= /\\brm\\s+-rf\\b/ || command ~= /--force\\b/ || command ~= /\\bgit\\s+reset\\s+--hard\\b/ || command ~= /\\bsudo\\b/ || command ~= /chmod\\s+777/)",
+        "hooks": [
+          {"type": "block", "reason": "위험 명령 차단. docs/policies/SECURITY.md와 docs/sops/human-approval-sop.md 참조."}
+        ]
+      },
+      {
+        "matcher": "tool in [\"Write\", \"Edit\"] && file_path ~= /\\.codex\\/config\\.toml$|docs\\/policies\\/|\\.github\\/workflows\\//",
+        "hooks": [
+          {"type": "confirm", "reason": "정책/CI/Codex 공용 설정 변경은 사람 승인 경로(human-approval-sop.md)를 사용한다."}
+        ]
+      },
+      {
+        "matcher": "tool in [\"Write\", \"Edit\"] && file_path ~= /docs\\/generated\\//",
+        "hooks": [
+          {"type": "block", "reason": "docs/generated/ 는 스크립트 전용. 직접 편집 금지."}
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "tool in [\"Edit\", \"Write\"] && file_path ~= /\\.(ts|tsx|js|jsx)$/",
+        "hooks": [
+          {"type": "command", "command": "cd frontend && npx prettier --write \"$file_path\" || true"}
+        ]
+      },
+      {
+        "matcher": "tool in [\"Edit\", \"Write\"] && file_path ~= /\\.py$/",
+        "hooks": [
+          {"type": "command", "command": "cd backend && (ruff check --fix \"$file_path\" || true) && (black \"$file_path\" || true)"}
+        ]
+      },
+      {
+        "matcher": "tool in [\"Edit\", \"Write\"]",
+        "hooks": [
+          {"type": "command", "command": "python scripts/structure-check.py --path \"$file_path\" --quiet || true"},
+          {"type": "command", "command": "python scripts/audit-log.py --tool \"$tool\" --path \"$file_path\""}
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {"type": "command", "command": "python scripts/docs-map.py --write docs/generated/doc-map.md || true"},
+          {"type": "command", "command": "python scripts/check-docs-freshness.py --warn-only || true"}
+        ]
+      }
+    ]
+  }
+}

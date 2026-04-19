@@ -1,0 +1,18 @@
+{
+  "_comment": "Template for .mcp.json. Copy to .mcp.json and replace <REPO_ROOT> with the absolute path to this repository. .mcp.json is .gitignored (local-specific absolute paths + env vars). Ref: docs/references/codex-mcp-server.md",
+  "mcpServers": {
+    "local-tax-mcp": {
+      "type": "stdio",
+      "command": "python",
+      "args": [
+        "<REPO_ROOT>\\backend\\mcp_server.py"
+      ],
+      "env": {
+        "PYTHONPATH": "<REPO_ROOT>\\backend",
+        "PLAYWRIGHT_HEADLESS": "false",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1"
+      }
+    }
+  }
+}

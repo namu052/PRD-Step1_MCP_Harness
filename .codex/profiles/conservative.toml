@@ -1,0 +1,24 @@
+# Codex profile: conservative
+# 공용 문서/정책/CI/보안 변경용. Level 1~2 보수적.
+
+extends = "../config.toml"
+profile = "conservative"
+
+[approvals]
+policy = "always"              # 어떤 쓰기도 사람 승인
+
+[sandbox]
+mode = "read-only"             # 기본은 읽기, 필요한 파일만 승인 후 쓰기
+network = "off"
+
+[limits]
+pr_size_lines = 200
+tool_timeout_sec = 180
+
+[commands]
+# 공용 허용 명령만 사용 — denied는 상위와 합산
+allowed = [
+  "git status", "git diff", "git log",
+  "scripts/verify.sh",
+  "scripts/structure-check.py",
+]

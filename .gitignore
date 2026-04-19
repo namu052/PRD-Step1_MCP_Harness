@@ -1,0 +1,72 @@
+# Secrets and local env
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# Python backend
+backend/.venv/
+backend/venv/
+backend/__pycache__/
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.ruff_cache/
+backend/**/*.pyc
+backend/**/*.pyo
+backend/**/__pycache__/
+
+# Node frontend
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+
+# Playwright browser profile (large, machine-specific)
+backend/.playwright/
+
+# Debug DOM dump HTML files (large, regeneratable)
+backend/debug/**/*.html
+
+# Test output / temp artifacts
+backend/collection_result.txt
+backend/pytest-cache-files-*/
+backend/backend/
+
+# Logs and temp files
+*.log
+logs/
+tmp/
+temp/
+
+# OS / editor
+.DS_Store
+*:Zone.Identifier
+.idea/
+.vscode/
+
+# Harness — 도구별 로컬 설정 및 작업 격리
+.codex/config.local.toml
+.codex/*.local.toml
+.codex-home-test/
+# Claude Code MCP — 절대경로·로컬 env 가 들어가므로 템플릿(.mcp.json.example)만 커밋
+.mcp.json
+.claude/settings.local.json
+.worktrees/
+observability/agent-actions/
+observability/archive/
+observability/ui-snapshots/
+observability/metrics/*.jsonl
+observability/metrics/*.db
+!observability/metrics/.gitkeep
+docs/generated/*
+!docs/generated/README.md
